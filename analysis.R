@@ -6,7 +6,8 @@
 library(tidyverse)
 
 # 2. Load dataset
-data <- read.csv("data.csv")
+# Make sure your file path is correct
+data <- read.csv("C:/Users/msnbu/Downloads/data.csv")
 
 # View data
 head(data)
@@ -20,7 +21,7 @@ summary(data)
 # 3. Data Cleaning
 data_clean <- na.omit(data)
 
-# Ensure correct data types
+# Convert Year to numeric
 data_clean$Year <- as.numeric(data_clean$Year)
 
 # Check cleaned data
@@ -41,13 +42,17 @@ ggplot(data_clean, aes(x = Year, y = Unemployment)) +
 ggplot(data_clean, aes(x = GDP_Growth, y = Unemployment)) +
   geom_point() +
   geom_smooth(method = "lm") +
-  labs(title = "GDP Growth vs Unemployment")
+  labs(title = "GDP Growth vs Unemployment",
+       x = "GDP Growth",
+       y = "Unemployment")
 
 # Inflation vs Unemployment
 ggplot(data_clean, aes(x = Inflation, y = Unemployment)) +
   geom_point() +
   geom_smooth(method = "lm") +
-  labs(title = "Inflation vs Unemployment")
+  labs(title = "Inflation vs Unemployment",
+       x = "Inflation",
+       y = "Unemployment")
 
 # =========================================
 # 5. Regression Model
@@ -55,7 +60,7 @@ ggplot(data_clean, aes(x = Inflation, y = Unemployment)) +
 
 model <- lm(Unemployment ~ GDP_Growth + Inflation + Education, data = data_clean)
 
-# Display regression results
+# Display results
 summary(model)
 
 # =========================================
@@ -69,7 +74,10 @@ plot(model)
 # 7. Save Outputs
 # =========================================
 
+# Save cleaned dataset
 write.csv(data_clean, "cleaned_data.csv", row.names = FALSE)
+
+# Save regression results
 capture.output(summary(model), file = "model_summary.txt")
 
 # =========================================
